@@ -1,0 +1,1863 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Калькулятор рассрочки АМАНАТ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .calculator {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .section-title svg {
+            width: 20px;
+            height: 20px;
+            color: #3498db;
+            flex-shrink: 0;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            background: white;
+            transition: all 0.3s;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        
+        .input-wrapper .currency {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-weight: 500;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .input-wrapper .percent-symbol {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-weight: 500;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .input-wrapper .months-symbol {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-weight: 500;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .value-display {
+            text-align: center;
+            margin-top: 10px;
+            color: #3498db;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .percent-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #718096;
+        }
+        
+        .percent-info .current-percent {
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        /* Стили для поля ввода месяцев */
+        .months-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .months-input-wrapper input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            background: white;
+            transition: all 0.3s;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .months-input-wrapper input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        
+        .months-input-wrapper .months-symbol {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-weight: 500;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .months-hint {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #718096;
+            font-style: italic;
+        }
+        
+        /* Кнопка для доступа к ручной наценке */
+        .manual-markup-access {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .manual-markup-access-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            touch-action: manipulation;
+        }
+        
+        .manual-markup-access-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .manual-markup-access-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .manual-markup-access-note {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        /* Стили для ввода пароля */
+        .password-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .password-section.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .password-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .password-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .password-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .password-header p {
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .password-input-group {
+            margin-bottom: 20px;
+        }
+        
+        .password-input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #4a5568;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .password-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .password-input-wrapper input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            background: white;
+            text-align: center;
+            letter-spacing: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .password-input-wrapper input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        
+        .password-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .password-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .password-submit {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+        
+        .password-cancel {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .password-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Секция ручной наценки */
+        .manual-markup-section {
+            background: #e8f5e9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 2px solid #4caf50;
+            position: relative;
+            display: none;
+        }
+        
+        .manual-markup-section.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Кнопка закрытия секции ручной наценки */
+        .close-manual-section {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f44336;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .close-manual-section:hover {
+            background: #d32f2f;
+            transform: rotate(90deg);
+        }
+        
+        .close-manual-section:active {
+            transform: scale(0.9) rotate(90deg);
+        }
+        
+        .manual-markup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-right: 40px; /* Для места под кнопку закрытия */
+        }
+        
+        .manual-markup-header svg {
+            width: 20px;
+            height: 20px;
+            color: #2e7d32;
+            flex-shrink: 0;
+        }
+        
+        .manual-markup-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        
+        .manual-markup-label {
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .manual-markup-note {
+            font-size: 12px;
+            color: #388e3c;
+            margin-top: 10px;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            touch-action: manipulation;
+            letter-spacing: 0.5px;
+        }
+        
+        .calculate-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .results {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .results-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .results-title svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .monthly-payment {
+            background: #e8f5e9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid #4caf50;
+        }
+        
+        .monthly-payment-label {
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .monthly-payment-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2e7d32;
+            line-height: 1.2;
+        }
+        
+        .monthly-payment-note {
+            font-size: 13px;
+            color: #388e3c;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+        
+        .result-card h4 {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .result-card .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.2;
+        }
+        
+        .result-card .highlight {
+            color: #e74c3c;
+        }
+        
+        .result-card .manual-mode {
+            color: #2ecc71;
+        }
+        
+        .result-card .unit {
+            font-size: 12px;
+            color: #718096;
+            margin-left: 2px;
+        }
+        
+        .copy-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .copy-section h4 {
+            font-size: 15px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copy-section h4 svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .copy-text {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #4a5568;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #e2e8f0;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            max-height: 150px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .copy-btn, .whatsapp-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            touch-action: manipulation;
+        }
+        
+        .copy-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
+        
+        .copy-btn:active, .whatsapp-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .copy-btn.copied {
+            background: #27ae60;
+        }
+        
+        .copy-btn svg, .whatsapp-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            background: #27ae60;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            animation: slideDown 0.3s ease;
+            max-width: 90%;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+        
+        /* Адаптивные стили для телефонов */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .content {
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .manual-markup-access {
+                padding: 15px;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .monthly-payment-amount {
+                font-size: 28px;
+            }
+            
+            .input-wrapper input,
+            .months-input-wrapper input {
+                font-size: 16px;
+                padding: 14px;
+            }
+            
+            .calculate-btn {
+                padding: 18px;
+                font-size: 16px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .copy-btn, .whatsapp-btn {
+                width: 100%;
+            }
+            
+            .results-title svg {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .copy-section h4 svg {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .copy-btn svg, .whatsapp-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .password-container {
+                padding: 20px;
+            }
+            
+            .password-header h3 {
+                font-size: 18px;
+            }
+            
+            .password-input-wrapper input {
+                font-size: 18px;
+                padding: 16px;
+            }
+            
+            .password-btn {
+                padding: 14px;
+                font-size: 14px;
+            }
+            
+            .manual-markup-section {
+                padding: 15px;
+            }
+            
+            .close-manual-section {
+                top: 10px;
+                right: 10px;
+                width: 28px;
+                height: 28px;
+                font-size: 16px;
+            }
+            
+            .manual-markup-header {
+                padding-right: 35px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (min-height: 700px) {
+            body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="header">
+                <h1>АМАНАТ</h1>
+                <p>Калькулятор рассрочки</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Себестоимость товара
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="cost-price">Сумма (₽)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="cost-price" step="1000" value="100000" inputmode="numeric">
+                            <span class="currency">₽</span>
+                        </div>
+                        <div class="value-display" id="cost-display">100,000 ₽</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Первый взнос
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="down-payment">Сумма (₽) и процент (%)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="down-payment" step="1000" value="25000" inputmode="numeric">
+                            <span class="currency">₽</span>
+                        </div>
+                        <div class="value-display" id="downpayment-display">25,000 ₽</div>
+                        <div class="percent-info">
+                            <span>Процент от стоимости:</span>
+                            <span class="current-percent" id="downpayment-percent">25%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        Срок рассрочки
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="months-input">Количество месяцев</label>
+                        <div class="months-input-wrapper">
+                            <input type="number" id="months-input" min="3" max="12" placeholder="3-12" inputmode="numeric" step="1">
+                            <span class="months-symbol">мес.</span>
+                        </div>
+                        <div class="months-hint">
+                            Введите срок рассрочки от 3 до 12 месяцев
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- КНОПКА ДОСТУПА К РУЧНОЙ НАЦЕНКЕ -->
+                <div class="manual-markup-access">
+                    <button class="manual-markup-access-btn" id="manual-markup-access-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                        Доступ к ручной наценке
+                    </button>
+                    <div class="manual-markup-access-note">
+                        Требуется пароль для доступа к расширенным настройкам
+                    </div>
+                </div>
+                
+                <!-- СЕКЦИЯ РУЧНОЙ НАЦЕНКИ (скрыта до ввода пароля) -->
+                <div class="manual-markup-section" id="manual-markup-section">
+                    <!-- Кнопка закрытия секции -->
+                    <button class="close-manual-section" id="close-manual-section" title="Закрыть секцию ручной наценки">
+                        ×
+                    </button>
+                    
+                    <div class="manual-markup-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                        <h3>Ручная наценка</h3>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="manual-markup-percent">Общая наценка (%)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="manual-markup-percent" step="0.1" min="0" max="1000" value="26" inputmode="decimal">
+                            <span class="percent-symbol">%</span>
+                        </div>
+                    </div>
+                    <div class="manual-markup-note">
+                        В этом режиме вы задаёте общую наценку в % от себестоимости<br>
+                        При расчете используется стандартная система округления
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" id="calculate-btn">
+                    Рассчитать рассрочку
+                </button>
+            </div>
+            
+            <div class="results" id="results">
+                <div class="results-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                    Результаты расчета
+                </div>
+                
+                <div class="monthly-payment">
+                    <div class="monthly-payment-label">ЕЖЕМЕСЯЧНЫЙ ПЛАТЕЖ</div>
+                    <div class="monthly-payment-amount" id="main-monthly-payment">-</div>
+                    <div class="monthly-payment-note" id="payment-note">в месяц</div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h4>Себестоимость</h4>
+                        <div class="value" id="result-cost">-</div>
+                        <div class="unit">рублей</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Первый взнос</h4>
+                        <div class="value" id="result-downpayment">-</div>
+                        <div class="unit">рублей</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Срок рассрочки</h4>
+                        <div class="value" id="result-term">-</div>
+                        <div class="unit">месяцев</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Итоговая стоимость</h4>
+                        <div class="value highlight" id="result-total">-</div>
+                        <div class="unit">рублей</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Переплата</h4>
+                        <div class="value highlight" id="result-overpayment">-</div>
+                        <div class="unit">рублей</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4 id="result-markup-label">Общая наценка</h4>
+                        <div class="value" id="result-total-markup">-</div>
+                        <div class="unit">рублей</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Режим расчета</h4>
+                        <div class="value manual-mode" id="result-mode">Стандартный</div>
+                        <div class="unit" id="result-mode-unit">-</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Наценка</h4>
+                        <div class="value manual-mode" id="result-markup-percent">-</div>
+                        <div class="unit" id="result-markup-unit">%</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Процент переплаты</h4>
+                        <div class="value highlight" id="result-overpayment-percent">-</div>
+                        <div class="unit">%</div>
+                    </div>
+                </div>
+                
+                <div class="copy-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Информация для оформления
+                    </h4>
+                    <div class="copy-text" id="copy-text">
+                        Расчет рассрочки:
+                        - Себестоимость: 100,000 ₽
+                        - Первый взнос: 25,000 ₽
+                        - Срок: 6 месяцев
+                        - Ежемесячный платеж: - ₽
+                        - Итоговая стоимость: - ₽
+                        - Переплата: - ₽
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="copy-btn" id="copy-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Копировать
+                        </button>
+                        
+                        <button class="whatsapp-btn" id="whatsapp-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                            </svg>
+                            Отправить в WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ОКНО ВВОДА ПАРОЛЯ -->
+    <div class="password-section" id="password-section">
+        <div class="password-container">
+            <div class="password-header">
+                <h3>Доступ к ручной наценке</h3>
+                <p>Введите пароль для доступа к расширенным настройкам</p>
+            </div>
+            
+            <div class="password-input-group">
+                <label for="password-input">Пароль</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="password-input" placeholder="••••" inputmode="numeric" maxlength="4">
+                </div>
+            </div>
+            
+            <div class="password-buttons">
+                <button class="password-btn password-submit" id="password-submit">Войти</button>
+                <button class="password-btn password-cancel" id="password-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="notification-text">Скопировано в буфер обмена!</span>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const costPriceInput = document.getElementById('cost-price');
+        const costDisplay = document.getElementById('cost-display');
+        
+        const downPaymentInput = document.getElementById('down-payment');
+        const downpaymentDisplay = document.getElementById('downpayment-display');
+        const downpaymentPercentDisplay = document.getElementById('downpayment-percent');
+        
+        // Поле ввода месяцев
+        const monthsInput = document.getElementById('months-input');
+        
+        // ЭЛЕМЕНТЫ ДЛЯ РУЧНОЙ НАЦЕНКИ И ПАРОЛЯ
+        const manualMarkupAccessBtn = document.getElementById('manual-markup-access-btn');
+        const manualMarkupSection = document.getElementById('manual-markup-section');
+        const closeManualSectionBtn = document.getElementById('close-manual-section');
+        const manualMarkupPercentInput = document.getElementById('manual-markup-percent');
+        const passwordSection = document.getElementById('password-section');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmitBtn = document.getElementById('password-submit');
+        const passwordCancelBtn = document.getElementById('password-cancel');
+        
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultsDiv = document.getElementById('results');
+        const copyBtn = document.getElementById('copy-btn');
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+        const copyText = document.getElementById('copy-text');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        
+        // ПАРОЛЬ
+        const PASSWORD = "5953";
+        let isManualModeUnlocked = false;
+        
+        // ТАБЛИЦА СТАВОК ДЛЯ ПЕРВОГО ВЗНОСА 0% (общая наценка за весь срок в зависимости от срока)
+        const zeroDownPaymentRates = {
+            3: 16,   // 3 месяца - 16% общей наценки за весь срок
+            4: 19,   // 4 месяца - 19% общей наценки за весь срок
+            5: 23,   // 5 месяцев - 23% общей наценки за весь срок
+            6: 26,   // 6 месяцев - 26% общей наценки за весь срок
+            7: 30,   // 7 месяцев - 30% общей наценки за весь срок
+            8: 34,   // 8 месяцев - 34% общей наценки за весь срок
+            9: 38,   // 9 месяцев - 38% общей наценки за весь срок
+            10: 42,  // 10 месяцев - 42% общей наценки за весь срок
+            11: 46,  // 11 месяцев - 46% общей наценки за весь срок
+            12: 49   // 12 месяцев - 49% общей наценки за весь срок
+        };
+        
+        // ТАБЛИЦА СТАВОК ДЛЯ ПЕРВОГО ВЗНОСА 1-25% (в месяц)
+        const rateTable = {
+            0: 4.35,   // 0% - 4.35% в месяц (но для 0% используется специальная таблица выше)
+            5: 4.15,   // 5% - 4.15% в месяц
+            10: 4.10,  // 10% - 4.10% в месяц
+            15: 4.00,  // 15% - 4.00% в месяц
+            20: 3.85,  // 20% - 3.85% в месяц
+            25: 3.50   // 25% - 3.50% в месяц
+        };
+        
+        // Переменные для хранения результатов
+        let currentCalculationData = {
+            costPrice: 0,
+            downPayment: 0,
+            downPaymentPercent: 0,
+            months: 0,
+            monthlyPayment: 0,
+            totalCost: 0,
+            overpayment: 0,
+            overpaymentPercent: 0,
+            calculationMode: 'Стандартный',
+            markupRateDisplay: ''
+        };
+        
+        // Получение базовой ставки наценки (стандартный режим)
+        function getBaseMarkupRate(downPaymentPercent, months) {
+            // СЛУЧАЙ 1: Первый взнос 0%
+            if (downPaymentPercent === 0) {
+                // Используем специальную таблицу ставок для 0% в зависимости от срока
+                // Если срок меньше 3 месяцев, используем ставку для 3 месяцев
+                if (months < 3) {
+                    return zeroDownPaymentRates[3];
+                }
+                // Если срок больше 12 месяцев, используем ставку для 12 месяцев
+                if (months > 12) {
+                    return zeroDownPaymentRates[12];
+                }
+                // Используем ближайший срок из таблицы
+                const roundedMonths = Math.max(3, Math.min(12, Math.round(months)));
+                return zeroDownPaymentRates[roundedMonths] || 4.35; 
+            }
+            
+            // СЛУЧАЙ 2: Первый взнос больше 25% (26% и более)
+            if (downPaymentPercent > 25) {
+                return null; // Специальный случай - будет обработан отдельно
+            }
+            
+            // СЛУЧАЙ 3: Первый взнос 1-25%
+            // Находим ближайший процент из таблицы (с округлением вниз)
+            const percentages = Object.keys(rateTable).map(Number).sort((a, b) => a - b);
+            
+            // Если процент меньше 0, возвращаем ставку для 0%
+            if (downPaymentPercent < 0) return rateTable[0];
+            
+            // Находим ближайший меньший процент
+            let closestRate = rateTable[0];
+            for (const percent of percentages) {
+                if (downPaymentPercent >= percent) {
+                    closestRate = rateTable[percent];
+                }
+            }
+            
+            return closestRate;
+        }
+        
+        // НОВАЯ ФУНКЦИЯ ОКРУГЛЕНИЯ
+        function specialRoundNew(amount) {
+            // Получаем последние две цифры числа
+            const lastTwoDigits = Math.floor(amount) % 100;
+            
+            // Получаем целую часть без последних двух цифр
+            const baseAmount = Math.floor(amount / 100) * 100;
+            
+            // Правило 1: Если последние две цифры от 01 до 50 - округляем вверх до 50
+            if (lastTwoDigits >= 1 && lastTwoDigits <= 50) {
+                return baseAmount + 50;
+            }
+            
+            // Правило 2: Если последние две цифры от 51 до 99 - округляем вверх до 100
+            if (lastTwoDigits >= 51 && lastTwoDigits <= 99) {
+                return baseAmount + 100;
+            }
+            
+            // Если последние две цифры 00, оставляем как есть
+            return baseAmount;
+        }
+        
+        // Обновление отображения себестоимости
+        function updateCostDisplay() {
+            let value = parseInt(costPriceInput.value);
+            
+            // Если значение не число или отрицательное, устанавливаем 0
+            if (isNaN(value) || value < 0) {
+                value = 0;
+            }
+            
+            costPriceInput.value = value;
+            costDisplay.textContent = value.toLocaleString('ru-RU') + ' ₽';
+            
+            // Обновляем процент первого взноса
+            updateDownPaymentPercent();
+            
+            // Обновляем максимальный первый взнос (не больше себестоимости)
+            downPaymentInput.max = value;
+            
+            // Если текущий первый взнос больше себестоимости - корректируем
+            if (parseInt(downPaymentInput.value) > value) {
+                downPaymentInput.value = Math.floor(value * 0.25);
+                updateDownPaymentDisplay();
+            }
+        }
+        
+        // Обновление процента первого взноса
+        function updateDownPaymentPercent() {
+            const costPrice = parseFloat(costPriceInput.value);
+            const downPayment = parseFloat(downPaymentInput.value);
+            
+            if (costPrice > 0) {
+                const percent = Math.round((downPayment / costPrice) * 100);
+                downpaymentPercentDisplay.textContent = percent + '%';
+            } else {
+                downpaymentPercentDisplay.textContent = '0%';
+            }
+        }
+        
+        // Обновление отображения первого взноса
+        function updateDownPaymentDisplay() {
+            let value = parseInt(downPaymentInput.value);
+            const maxValue = parseInt(downPaymentInput.max);
+            
+            // Проверяем, что значение не отрицательное
+            if (value < 0) value = 0;
+            
+            // Проверяем, что не больше максимума
+            if (value > maxValue) value = maxValue;
+            
+            downPaymentInput.value = value;
+            downpaymentDisplay.textContent = value.toLocaleString('ru-RU') + ' ₽';
+            
+            // Обновляем процент
+            updateDownPaymentPercent();
+        }
+        
+        // Обновление поля ввода месяцев
+        function updateMonthsInput() {
+            let value = monthsInput.value;
+            
+            // Если поле пустое, оставляем его пустым
+            if (value === '') {
+                return;
+            }
+            
+            // Преобразуем в число
+            value = parseInt(value);
+            
+            // Если значение не число или меньше 3, устанавливаем 3
+            if (isNaN(value) || value < 3) {
+                value = 3;
+            }
+            
+            // Ограничиваем максимальное значение 12 месяцами
+            if (value > 12) {
+                value = 12;
+            }
+            
+            monthsInput.value = value;
+        }
+        
+        // Показать окно ввода пароля
+        function showPasswordSection() {
+            passwordSection.classList.add('show');
+            passwordInput.focus();
+            passwordInput.value = '';
+        }
+        
+        // Скрыть окно ввода пароля
+        function hidePasswordSection() {
+            passwordSection.classList.remove('show');
+            passwordInput.value = '';
+        }
+        
+        // Закрыть секцию ручной наценки
+        function closeManualMarkupSection() {
+            manualMarkupSection.classList.remove('show');
+            isManualModeUnlocked = false;
+            showNotification('Секция ручной наценки закрыта');
+        }
+        
+        // Проверка пароля
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === PASSWORD) {
+                isManualModeUnlocked = true;
+                hidePasswordSection();
+                manualMarkupSection.classList.add('show');
+                showNotification('Режим ручной наценки активирован');
+                
+                // Прокручиваем к секции ручной наценки
+                setTimeout(() => {
+                    manualMarkupSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            } else {
+                showNotification('Неверный пароль! Попробуйте снова.');
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Добавляем эффект встряски при неверном пароле
+                passwordInput.style.animation = 'none';
+                setTimeout(() => {
+                    passwordInput.style.animation = 'shake 0.5s ease';
+                }, 10);
+                
+                // Убираем анимацию через 0.5 секунды
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+            }
+        }
+        
+        // Форматирование суммы с разделителями тысяч
+        function formatCurrency(amount) {
+            return amount.toLocaleString('ru-RU') + ' ₽';
+        }
+        
+        // Создание текста для WhatsApp
+        function createWhatsAppText(data) {
+            const { costPrice, downPayment, downPaymentPercent, months, monthlyPayment, totalCost, overpayment, overpaymentPercent } = data;
+            
+            return `*РАСЧЕТ РАССРОЧКИ АМАНАТ*
+
+*Основные результаты:*
+• Себестоимость: ${formatCurrency(costPrice)}
+• Первый взнос: ${formatCurrency(downPayment)} (${downPaymentPercent}%)
+• Срок: ${months} месяцев
+• Ежемесячный платеж: ${formatCurrency(monthlyPayment)}
+• Итоговая стоимость: ${formatCurrency(totalCost)}
+• Переплата: ${formatCurrency(overpayment)} (${overpaymentPercent}%)
+
+_Расчет произведен через калькулятор рассрочки АМАНАТ_`;
+        }
+        
+        // Отправка в WhatsApp
+        function sendToWhatsApp() {
+            if (currentCalculationData.monthlyPayment === 0) {
+                alert('Сначала выполните расчет рассрочки');
+                return;
+            }
+            
+            const text = createWhatsAppText(currentCalculationData);
+            const encodedText = encodeURIComponent(text);
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+            
+            // Открываем WhatsApp в новом окне
+            window.open(whatsappUrl, '_blank');
+            
+            // Показываем уведомление
+            showNotification('Открывается WhatsApp...');
+        }
+        
+        // Показать уведомление
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.style.display = 'flex';
+            
+            // Скрываем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Основная функция расчета рассрочки
+        function calculateInstallment() {
+            // Получаем значения из полей
+            const costPrice = parseFloat(costPriceInput.value);
+            const downPayment = parseFloat(downPaymentInput.value);
+            const monthsValue = monthsInput.value;
+            
+            // Проверяем, заполнено ли поле месяцев
+            if (monthsValue === '') {
+                alert('Пожалуйста, введите срок рассрочки от 3 до 12 месяцев');
+                monthsInput.focus();
+                return;
+            }
+            
+            const months = parseFloat(monthsValue);
+            const isManualMode = isManualModeUnlocked && manualMarkupSection.classList.contains('show');
+            const manualMarkupPercent = parseFloat(manualMarkupPercentInput.value);
+            
+            // Рассчитываем процент первого взноса
+            const downPaymentPercent = costPrice > 0 ? Math.round((downPayment / costPrice) * 100) : 0;
+            
+            // Проверка корректности данных
+            if (downPayment >= costPrice) {
+                alert('Первый взнос не может быть больше или равен себестоимости товара');
+                downPaymentInput.value = Math.floor(costPrice * 0.25);
+                updateDownPaymentDisplay();
+                return;
+            }
+            
+            if (costPrice <= 0) {
+                alert('Себестоимость должна быть больше 0');
+                costPriceInput.value = 1000;
+                updateCostDisplay();
+                return;
+            }
+            
+            if (downPayment < 0) {
+                alert('Первый взнос не может быть отрицательным');
+                downPaymentInput.value = 0;
+                updateDownPaymentDisplay();
+                return;
+            }
+            
+            if (months < 3) {
+                alert('Минимальный срок рассрочки - 3 месяца');
+                monthsInput.value = 3;
+                updateMonthsInput();
+                return;
+            }
+            
+            if (months > 12) {
+                alert('Максимальный срок рассрочки - 12 месяцев');
+                monthsInput.value = 12;
+                updateMonthsInput();
+                return;
+            }
+            
+            if (isManualMode && (manualMarkupPercent < 0 || manualMarkupPercent > 1000)) {
+                alert('Наценка должна быть в пределах 0-1000%');
+                manualMarkupPercentInput.value = 26;
+                return;
+            }
+            
+            // Скрываем клавиатуру на мобильных устройствах
+            document.activeElement.blur();
+            
+            let monthlyPayment, totalCost, totalMarkup;
+            let markupRateDisplay = '';
+            let calculationMode = isManualMode ? 'Ручная наценка' : 'Стандартный';
+            
+            if (isManualMode) {
+                // РЕЖИМ РУЧНОЙ НАЦЕНКИ
+                // Просто применяем указанный процент наценки к себестоимости
+                
+                // 1. Рассчитываем общую сумму с наценкой
+                const totalMarkupAmount = costPrice * (manualMarkupPercent / 100);
+                const totalWithMarkup = costPrice + totalMarkupAmount;
+                
+                // 2. Вычитаем первый взнос
+                const totalAfterDownPayment = totalWithMarkup - downPayment;
+                
+                // 3. Рассчитываем ежемесячный платеж до округления
+                const monthlyBeforeRounding = totalAfterDownPayment / months;
+                
+                // 4. Применяем НОВОЕ ОСОБОЕ ОКРУГЛЕНИЕ
+                monthlyPayment = specialRoundNew(monthlyBeforeRounding);
+                
+                // 5. Итоговая стоимость (первый взнос + все ежемесячные платежи)
+                totalCost = downPayment + (monthlyPayment * months);
+                
+                // 6. Общая наценка
+                totalMarkup = totalCost - costPrice;
+                
+                // 7. Отображение ставки наценки
+                markupRateDisplay = `${manualMarkupPercent.toFixed(1)}% общей наценки от себестоимости`;
+                
+            } else {
+                // СТАНДАРТНЫЙ РЕЖИМ (старая логика)
+                // Проверяем, какой тип расчета использовать
+                if (downPaymentPercent > 25) {
+                    // СЛУЧАЙ 1: Первый взнос больше 25% (26% и более)
+                    // Наценка 4.35% в месяц на остаток после вычета первого взноса
+                    
+                    // 1. Рассчитываем остаток после вычета первого взноса
+                    const remainingAmount = costPrice - downPayment;
+                    
+                    // 2. Наценка 4.35% в месяц на остаток
+                    const markupRate = 4.35 / 100; // 4.35% в месяц
+                    
+                    // 3. Рассчитываем общую сумму с наценкой на остаток
+                    const totalWithMarkup = remainingAmount * (1 + markupRate * months);
+                    
+                    // 4. Рассчитываем ежемесячный платеж до округления
+                    const monthlyBeforeRounding = totalWithMarkup / months;
+                    
+                    // 5. Применяем НОВОЕ ОСОБОЕ ОКРУГЛЕНИЕ
+                    monthlyPayment = specialRoundNew(monthlyBeforeRounding);
+                    
+                    // 6. Итоговая стоимость (первый взнос + все ежемесячные платежи)
+                    totalCost = downPayment + (monthlyPayment * months);
+                    
+                    // 7. Общая наценка
+                    totalMarkup = totalCost - costPrice;
+                    
+                    // 8. Отображение ставки наценки
+                    markupRateDisplay = "4.35% в месяц на остаток после первого взноса";
+                    
+                } else if (downPaymentPercent === 0) {
+                    // СЛУЧАЙ 2: Первый взнос 0%
+                    // Используем специальную таблицу ставок: процент от себестоимости за весь срок
+                    
+                    // Получаем процент общей наценки за весь срок из специальной таблицы
+                    // Округляем месяцы до ближайшего целого для поиска в таблице
+                    const roundedMonths = Math.max(3, Math.min(12, Math.round(months)));
+                    const totalMarkupPercent = zeroDownPaymentRates[roundedMonths] || 4.35;
+                    
+                    // 1. Рассчитываем общую сумму с наценкой
+                    // totalMarkupPercent - это процент от себестоимости за весь срок
+                    const totalWithMarkup = costPrice * (1 + totalMarkupPercent / 100);
+                    
+                    // 2. Вычитаем первый взнос (0)
+                    const totalAfterDownPayment = totalWithMarkup - downPayment;
+                    
+                    // 3. Рассчитываем ежемесячный платеж до округления
+                    const monthlyBeforeRounding = totalAfterDownPayment / months;
+                    
+                    // 4. Применяем НОВОЕ ОСОБОЕ ОКРУГЛЕНИЕ
+                    monthlyPayment = specialRoundNew(monthlyBeforeRounding);
+                    
+                    // 5. Итоговая стоимость (первый взнос + все ежемесячные платежи)
+                    totalCost = downPayment + (monthlyPayment * months);
+                    
+                    // 6. Общая наценка
+                    totalMarkup = totalCost - costPrice;
+                    
+                    // 7. Отображение ставки наценки
+                    markupRateDisplay = `${totalMarkupPercent}% общей наценки за весь срок от себестоимости (специальная ставка для 0% взноса)`;
+                    
+                } else {
+                    // СЛУЧАЙ 3: Первый взнос 1-25%
+                    // Используем систему наценки из основной таблицы (в месяц)
+                    
+                    // Получаем ставку наценки из таблицы (в месяц)
+                    const markupRate = getBaseMarkupRate(downPaymentPercent, months) / 100;
+                    
+                    // 1. Рассчитываем общую сумму с наценкой на ВСЮ себестоимость
+                    const totalWithMarkup = costPrice * (1 + markupRate * months);
+                    
+                    // 2. Вычитаем первый взнос
+                    const totalAfterDownPayment = totalWithMarkup - downPayment;
+                    
+                    // 3. Рассчитываем ежемесячный платеж до округления
+                    const monthlyBeforeRounding = totalAfterDownPayment / months;
+                    
+                    // 4. Применяем НОВОЕ ОСОБОЕ ОКРУГЛЕНИЕ
+                    monthlyPayment = specialRoundNew(monthlyBeforeRounding);
+                    
+                    // 5. Итоговая стоимость (первый взнос + все ежемесячные платежи)
+                    totalCost = downPayment + (monthlyPayment * months);
+                    
+                    // 6. Общая наценка
+                    totalMarkup = totalCost - costPrice;
+                    
+                    // 7. Отображение ставки наценки
+                    const baseRate = getBaseMarkupRate(downPaymentPercent, months);
+                    markupRateDisplay = `${baseRate}% в месяц от себестоимости`;
+                }
+            }
+            
+            // Финансовые показатели
+            const overpayment = totalMarkup;
+            const overpaymentPercent = ((totalCost - costPrice) / costPrice * 100).toFixed(1);
+            
+            // Сохраняем данные для WhatsApp
+            currentCalculationData = {
+                costPrice,
+                downPayment,
+                downPaymentPercent,
+                months,
+                monthlyPayment,
+                totalCost,
+                overpayment,
+                overpaymentPercent,
+                calculationMode,
+                markupRateDisplay
+            };
+            
+            // Обновление основных результатов
+            document.getElementById('main-monthly-payment').textContent = formatCurrency(monthlyPayment);
+            document.getElementById('payment-note').textContent = `${months} платежей по ${formatCurrency(monthlyPayment)}`;
+            
+            document.getElementById('result-cost').textContent = formatCurrency(costPrice);
+            document.getElementById('result-downpayment').textContent = formatCurrency(downPayment);
+            document.getElementById('result-term').textContent = months + ' мес';
+            document.getElementById('result-total').textContent = formatCurrency(totalCost);
+            document.getElementById('result-overpayment').textContent = formatCurrency(overpayment);
+            document.getElementById('result-total-markup').textContent = formatCurrency(totalMarkup);
+            document.getElementById('result-overpayment-percent').textContent = overpaymentPercent + '%';
+            
+            // Обновление информации о режиме и наценке
+            document.getElementById('result-mode').textContent = calculationMode;
+            document.getElementById('result-mode-unit').textContent = isManualMode ? 'режим' : 'режим';
+            
+            if (isManualMode) {
+                document.getElementById('result-markup-percent').textContent = manualMarkupPercent.toFixed(1) + '%';
+                document.getElementById('result-markup-unit').textContent = 'общая наценка';
+                document.getElementById('result-markup-label').textContent = 'Общая наценка';
+            } else {
+                const markupPercent = ((totalMarkup / costPrice) * 100).toFixed(1);
+                document.getElementById('result-markup-percent').textContent = markupPercent + '%';
+                document.getElementById('result-markup-unit').textContent = 'от себестоимости';
+                document.getElementById('result-markup-label').textContent = 'Общая наценка';
+            }
+            
+            // Обновление текста для копирования
+            updateCopyText(costPrice, downPayment, downPaymentPercent, months, 
+                          monthlyPayment, totalCost, overpayment, overpaymentPercent,
+                          calculationMode, markupRateDisplay);
+            
+            // Показываем результаты с анимацией
+            resultsDiv.classList.add('show');
+            
+            // Прокручиваем к результатам
+            setTimeout(() => {
+                resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+        
+        // Обновление текста для копирования
+        function updateCopyText(costPrice, downPayment, downPaymentPercent, months, 
+                               monthlyPayment, totalCost, overpayment, overpaymentPercent,
+                               calculationMode, markupRateDisplay) {
+            
+            const text = `РАСЧЕТ РАССРОЧКИ АМАНАТ
+
+Основные результаты:
+• Себестоимость: ${formatCurrency(costPrice)}
+• Первый взнос: ${formatCurrency(downPayment)} (${downPaymentPercent}%)
+• Срок: ${months} месяцев
+• Ежемесячный платеж: ${formatCurrency(monthlyPayment)}
+• Итоговая стоимость: ${formatCurrency(totalCost)}
+• Переплата: ${formatCurrency(overpayment)} (${overpaymentPercent}%)
+• Режим расчета: ${calculationMode}
+• Наценка: ${markupRateDisplay}
+
+Условия:
+- Округление платежей: от 01 до 50 → 50, от 51 до 99 → 100`;
+            
+            copyText.textContent = text;
+        }
+        
+        // Копирование в буфер обмена
+        async function copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(copyText.textContent);
+                
+                // Показываем уведомление
+                showNotification('Скопировано в буфер обмена!');
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Скопировано!
+                `;
+                
+                // Скрываем уведомление через 3 секунды
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Копировать
+                    `;
+                }, 3000);
+            } catch (err) {
+                console.error('Ошибка копирования: ', err);
+                alert('Не удалось скопировать текст. Выделите текст вручную и скопируйте.');
+            }
+        }
+        
+        // Инициализация
+        function init() {
+            // Инициализация отображения
+            updateCostDisplay();
+            updateDownPaymentDisplay();
+            
+            // Поле месяцев оставляем пустым
+            monthsInput.value = '';
+            
+            // Секция ручной наценки скрыта до ввода пароля
+            manualMarkupSection.classList.remove('show');
+            
+            // Обработчики для себестоимости
+            costPriceInput.addEventListener('input', updateCostDisplay);
+            costPriceInput.addEventListener('change', updateCostDisplay);
+            
+            // Обработчики для первого взноса
+            downPaymentInput.addEventListener('input', updateDownPaymentDisplay);
+            downPaymentInput.addEventListener('change', updateDownPaymentDisplay);
+            
+            // Обработчики для поля ввода месяцев
+            monthsInput.addEventListener('input', updateMonthsInput);
+            monthsInput.addEventListener('change', updateMonthsInput);
+            
+            // Обработчик кнопки доступа к ручной наценке
+            manualMarkupAccessBtn.addEventListener('click', showPasswordSection);
+            manualMarkupAccessBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                showPasswordSection();
+            });
+            
+            // Обработчик кнопки закрытия секции ручной наценки
+            closeManualSectionBtn.addEventListener('click', closeManualMarkupSection);
+            closeManualSectionBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                closeManualMarkupSection();
+            });
+            
+            // Обработчик кнопки проверки пароля
+            passwordSubmitBtn.addEventListener('click', checkPassword);
+            passwordSubmitBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                checkPassword();
+            });
+            
+            // Обработчик кнопки отмены пароля
+            passwordCancelBtn.addEventListener('click', hidePasswordSection);
+            passwordCancelBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                hidePasswordSection();
+            });
+            
+            // Обработчик ввода пароля при нажатии Enter
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            // Ограничиваем ввод пароля только цифрами
+            passwordInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+            });
+            
+            // Обработчики для поля ручной наценки
+            manualMarkupPercentInput.addEventListener('input', function() {
+                // Ничего не делаем при вводе - только при нажатии кнопки расчета
+            });
+            
+            manualMarkupPercentInput.addEventListener('change', function() {
+                // Ничего не делаем при изменении - только при нажатии кнопки расчета
+            });
+            
+            // Обработчик кнопки расчета
+            calculateBtn.addEventListener('click', calculateInstallment);
+            calculateBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                calculateInstallment();
+            });
+            
+            // Обработчик кнопки копирования
+            copyBtn.addEventListener('click', copyToClipboard);
+            copyBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                copyToClipboard();
+            });
+            
+            // Обработчик кнопки WhatsApp
+            whatsappBtn.addEventListener('click', sendToWhatsApp);
+            whatsappBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                sendToWhatsApp();
+            });
+            
+            // Ввод с клавиатуры - автоматический пересчет при нажатии Enter
+            costPriceInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateInstallment();
+                }
+            });
+            
+            downPaymentInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateInstallment();
+                }
+            });
+            
+            monthsInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateInstallment();
+                }
+            });
+            
+            manualMarkupPercentInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateInstallment();
+                }
+            });
+            
+            // Добавляем CSS анимацию для встряски при неверном пароле
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Запускаем инициализацию при загрузке DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
